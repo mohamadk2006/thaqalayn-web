@@ -1,72 +1,63 @@
-import { Search } from "lucide-react";
+import Link from "next/link";
+import { WorkGrid } from "@/components/book/work-card";
+import { CategoryIndex } from "@/components/catalog/category-index";
+import { SearchHero } from "@/components/search/search-hero";
+import { getCatalogStats, getCategoriesWithCounts, getFeaturedWorks } from "@/lib/api/server";
+import { formatNumber } from "@/lib/format";
 import styles from "./page.module.css";
 
-// Temporary foundation check page (design-system/MASTER.md tokens) — replaced by the real home page in Phase 2.
-const covers = [
-  { title: "الكافي", author: "الشيخ الكليني", death: "٣٢٩", vols: "٨ مجلدات", color: "#5b2a14" },
-  { title: "الإرشاد", author: "الشيخ المفيد", death: "٤١٣", vols: "مجلدان", color: "#1f3b33" },
-  { title: "الصحيفة السجادية", author: "الإمام زين العابدين (ع)", death: "٩٤", vols: "", color: "#3b2f4f" },
-];
+const FEATURED_ON_HOME = 12;
 
-const categories = [
-  ["القرآن الكريم وعلومه", "٣٨"],
-  ["مصادر العقائد عند الشيعة", "١١٢"],
-  ["مصادر الحديث الشيعية - القسم العام", "٩٦"],
-];
+export default async function Home() {
+  const [featured, categories, stats] = await Promise.all([
+    getFeaturedWorks(),
+    getCategoriesWithCounts(),
+    getCatalogStats(),
+  ]);
 
-export default function Home() {
   return (
     <>
       <section className={styles.hero}>
         <div className="container">
           <h1 className={styles.title}>تراث الثقلين بين يديك</h1>
           <p className={styles.lead}>
-            أكثر من ثمانية عشر ألف كتاب في الحديث والتفسير والفقه والعقائد، للقراءة والبحث في النص الكامل.
+            مكتبة رقمية مفتوحة في الحديث والتفسير والفقه والعقائد والتاريخ، للقراءة والبحث في النص الكامل.
           </p>
-          <form className={styles.search} role="search" action="/search">
-            <label htmlFor="q" className="visually-hidden">
-              ابحث في المكتبة
-            </label>
-            <Search className={styles.searchIcon} size={20} strokeWidth={1.75} aria-hidden />
-            <input id="q" name="q" placeholder="طلب العلم فريضة…" />
-            <button type="submit">بحث</button>
-          </form>
+          <SearchHero />
+          <dl className={styles.stats}>
+            <div>
+              <dt>كتاب</dt>
+              <dd>{formatNumber(stats.books)}</dd>
+            </div>
+            <div>
+              <dt>مؤلف</dt>
+              <dd>{formatNumber(stats.authors)}</dd>
+            </div>
+            <div>
+              <dt>قسمًا</dt>
+              <dd>{formatNumber(categories.length)}</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
-      <section className={`container ${styles.section}`}>
+      <section className={`container ${styles.section}`} aria-labelledby="featured">
         <div className={styles.head}>
-          <h2>مختارات الكتب</h2>
-          <a href="#">عرض الكل</a>
+          <h2 id="featured">مختارات الكتب</h2>
+          {featured.length > FEATURED_ON_HOME && (
+            <Link href="/featured">عرض الكل ({formatNumber(featured.length)})</Link>
+          )}
         </div>
-        <div className={styles.covers}>
-          {covers.map((c) => (
-            <a key={c.title} href="#" className={styles.book}>
-              <span className={styles.cover} style={{ background: c.color }}>
-                <span className={styles.coverTitle}>{c.title}</span>
-                <span className={styles.coverVols}>{c.vols}</span>
-              </span>
-              <span className={styles.metaTitle}>{c.title}</span>
-              <span className={styles.metaAuthor}>
-                {c.author} (ت {c.death}هـ)
-              </span>
-            </a>
-          ))}
-        </div>
+        <WorkGrid works={featured.slice(0, FEATURED_ON_HOME)} strip />
       </section>
 
-      <section id="categories" className={`container ${styles.section}`}>
-        <h3 className={styles.listHead}>الكتب الشيعية</h3>
-        <ul className={styles.index}>
-          {categories.map(([name, count]) => (
-            <li key={name}>
-              <a href="#">
-                <span>{name}</span>
-                <span className={styles.count}>{count}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+      <section id="categories" className={styles.band} aria-labelledby="categories-title">
+        <div className="container">
+          <div className={styles.head}>
+            <h2 id="categories-title">الأقسام</h2>
+          </div>
+          <CategoryIndex categories={categories} />
+        </div>
       </section>
     </>
   );

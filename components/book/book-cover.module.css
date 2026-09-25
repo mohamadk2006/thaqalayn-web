@@ -1,0 +1,43 @@
+.cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 2 / 3;
+  padding: 18px 14px;
+  border-radius: 6px 2px 2px 6px; /* spine on the right: Arabic books are bound on the right */
+  color: var(--cover-ink);
+  box-shadow:
+    inset -6px 0 0 rgb(0 0 0 / 18%),
+    0 10px 20px -12px rgb(0 0 0 / 50%);
+  overflow: hidden;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.title {
+  margin-block-start: 16%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(17px, 1.6vw + 8px, 22px);
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.caption {
+  font-size: 12px;
+  text-align: center;
+  opacity: 0.85;
+}

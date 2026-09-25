@@ -62,6 +62,36 @@ export async function getBooks(query: BooksQuery = {}) {
   return apiGet("/api/books", { query });
 }
 
+/** Featured works ("مختارات الكتب") in the order set in the admin panel. */
+export async function getFeaturedWorks() {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("catalog");
+  const res = await apiGet("/api/works", { query: { featured: true, limit: 100 } });
+  return res.items;
+}
+
+/** Categories with their number of works, empty ones dropped (e.g. "مخطوطات"), in server order. */
+export async function getCategoriesWithCounts() {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("catalog");
+  const categories = await getCategories();
+  const totals = await Promise.all(
+    categories.map((c) => apiGet("/api/works", { query: { subject: c.id, limit: 1 } }).then((r) => r.total)),
+  );
+  return categories.map((c, i) => ({ ...c, workCount: totals[i] })).filter((c) => c.workCount > 0);
+}
+
+/** Totals for the home page. */
+export async function getCatalogStats() {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("catalog");
+  const [books, authors] = await Promise.all([apiGet("/api/books", { query: { limit: 1 } }), getAuthors()]);
+  return { books: books.total, authors: authors.length };
+}
+
 // Content ------------------------------------------------------------------------------------
 
 export async function getWork(workId: string) {
