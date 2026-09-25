@@ -13,6 +13,17 @@ const nextConfig: NextConfig = {
     // A single work/book, its TOC and pages — content rarely changes.
     content: { stale: 60 * 60, revalidate: 60 * 60 * 24, expire: 60 * 60 * 24 * 30 },
   },
+  // Canonical host is www. Done here (permanent 308) because Coolify's own www redirect is a 302.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "thaqalaynlibrary.com" }],
+        destination: "https://www.thaqalaynlibrary.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
