@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أ — المكتبة الأكاديمية</title>
+<style>
+@font-face { font-family: Kufi; src: url(fonts/NotoKufiArabic-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Kufi; src: url(fonts/NotoKufiArabic-Medium.ttf); font-weight: 500; }
+@font-face { font-family: Kufi; src: url(fonts/NotoKufiArabic-Bold.ttf); font-weight: 700; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Bold.ttf); font-weight: 700; }
+@font-face { font-family: Naskh; src: url(fonts/NotoNaskhArabic-VariableFont_wght.ttf); font-weight: 400 700; }
+
+:root {
+  --paper: #faf7f0; --paper-2: #f3eee3; --line: #e3dccd; --ink: #1f1b16; --ink-2: #5a5146; --ink-3: #8a8072;
+  --accent: #9a3b12; --accent-soft: #f4e4d8;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: Kufi, sans-serif; font-size: 15px; line-height: 1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+/* header */
+header { border-bottom: 1px solid var(--line); background: var(--paper); position: sticky; top: 0; z-index: 5; }
+header .wrap { display: flex; align-items: center; gap: 32px; height: 68px; }
+.brand { font-family: Amiri; font-weight: 700; font-size: 28px; color: var(--accent); white-space: nowrap; }
+nav { display: flex; gap: 24px; font-size: 14px; color: var(--ink-2); }
+nav a.on { color: var(--ink); font-weight: 700; }
+.hsearch { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--ink-3); font-size: 13px; min-width: 260px; background: #fff; }
+.kbd { margin-inline-start: auto; font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
+
+/* hero */
+.hero { padding: 72px 0 56px; text-align: center; border-bottom: 1px solid var(--line); }
+.hero h1 { font-family: Amiri; font-weight: 700; font-size: 52px; line-height: 1.3; margin: 0 0 12px; }
+.hero p { color: var(--ink-2); margin: 0 auto 32px; max-width: 560px; }
+.bigsearch { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid var(--ink); border-radius: 6px; display: flex; align-items: stretch; box-shadow: 0 1px 0 var(--ink); }
+.bigsearch .scope { display: flex; border-inline-end: 1px solid var(--line); }
+.bigsearch .scope span { padding: 14px 14px; font-size: 13px; color: var(--ink-3); cursor: pointer; }
+.bigsearch .scope span.on { color: var(--accent); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
+.bigsearch input { flex: 1; border: 0; font: inherit; font-size: 16px; padding: 0 16px; background: transparent; outline: none; }
+.bigsearch button { border: 0; background: var(--accent); color: #fff; font: inherit; font-weight: 700; padding: 0 28px; border-radius: 5px 0 0 5px; }
+.stats { display: flex; justify-content: center; gap: 48px; margin-top: 36px; color: var(--ink-3); font-size: 13px; }
+.stats b { display: block; font-family: Amiri; font-size: 28px; color: var(--ink); }
+
+/* section */
+section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+.shead { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
+.shead h2 { font-family: Amiri; font-size: 30px; margin: 0; }
+.shead a { margin-inline-start: auto; color: var(--accent); font-size: 13px; font-weight: 500; }
+
+/* covers */
+.covers { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 28px 20px; }
+.cover { aspect-ratio: 2/3; border-radius: 2px 6px 6px 2px; padding: 18px 14px; display: flex; flex-direction: column; justify-content: space-between; color: #f7efe1; box-shadow: inset 6px 0 0 rgba(0,0,0,.18), 0 10px 20px -12px rgba(0,0,0,.5); position: relative; }
+.cover::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,255,255,.35); border-radius: 2px; pointer-events: none; }
+.cover .t { font-family: Amiri; font-weight: 700; font-size: 22px; line-height: 1.35; text-align: center; margin-top: 18%; }
+.cover .v { font-size: 11px; text-align: center; opacity: .8; }
+.meta { margin-top: 10px; font-size: 13px; }
+.meta b { display: block; font-weight: 700; font-size: 14px; }
+.meta span { color: var(--ink-3); }
+
+/* categories as a scholarly index */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.cols h3 { font-size: 13px; letter-spacing: .02em; color: var(--accent); margin: 0 0 8px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.idx a { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.idx a:hover { color: var(--accent); }
+.idx a span:last-child { color: var(--ink-3); font-size: 13px; font-family: Amiri; }
+
+/* work page */
+.work { display: grid; grid-template-columns: 220px 1fr; gap: 48px; }
+.work h2 { font-family: Amiri; font-size: 40px; margin: 0; line-height: 1.2; }
+.byline { color: var(--ink-2); margin: 6px 0 20px; }
+.byline a { color: var(--accent); font-weight: 500; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.tag { font-size: 12px; background: var(--paper-2); border: 1px solid var(--line); padding: 2px 10px; border-radius: 999px; color: var(--ink-2); }
+.vols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 28px; }
+.vols a { border: 1px solid var(--line); background: #fff; padding: 10px 12px; border-radius: 4px; font-size: 13px; }
+.vols a b { display: block; font-family: Amiri; font-size: 18px; }
+.vols a.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.btns { display: flex; gap: 10px; }
+.btn { padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 14px; border: 1px solid var(--ink); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.toc { columns: 2; column-gap: 40px; margin-top: 8px; }
+.toc a { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px dotted var(--line); font-size: 14px; break-inside: avoid; }
+.toc a span:last-child { margin-inline-start: auto; color: var(--ink-3); font-family: Amiri; }
+
+/* reader */
+.reader { background: var(--paper-2); }
+.rbar { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--ink-2); max-width: 1180px; margin: 0 auto 24px; }
+.rbar .crumbs b { color: var(--ink); }
+.rbar .tools { margin-inline-start: auto; display: flex; gap: 6px; }
+.rbar .tools span { border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 4px 10px; }
+.rgrid { display: grid; grid-template-columns: 260px minmax(0, 700px) 1fr; gap: 40px; max-width: 1180px; margin: 0 auto; }
+.side { font-size: 13px; position: sticky; top: 90px; align-self: start; }
+.side h4 { margin: 0 0 8px; font-size: 12px; color: var(--ink-3); }
+.side a { display: block; padding: 5px 10px; border-inline-start: 2px solid var(--line); color: var(--ink-2); }
+.side a.on { border-color: var(--accent); color: var(--accent); font-weight: 700; background: var(--accent-soft); }
+.page { background: #fffdf8; border: 1px solid var(--line); padding: 56px 64px; font-family: Naskh; font-size: 21px; line-height: 2.1; box-shadow: 0 20px 40px -30px rgba(60,40,10,.4); }
+.page h3 { font-family: Naskh; font-weight: 700; color: var(--ink-2); text-align: center; font-size: 22px; margin: 0 0 4px; }
+.page p { margin: 0 0 14px; text-align: justify; }
+.page mark { background: #f5d9a8; padding: 0 2px; border-radius: 2px; }
+.fn { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 12px; font-size: 15px; color: var(--ink-2); line-height: 1.9; }
+.pager { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 13px; color: var(--ink-2); }
+.pager .pn { font-family: Amiri; font-size: 18px; color: var(--ink); }
+.pager a { border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 6px 14px; }
+.cite { font-size: 12px; background: var(--ink); color: var(--paper); padding: 6px 10px; border-radius: 4px; display: inline-flex; gap: 12px; margin-bottom: 14px; font-family: Kufi; }
+
+footer { padding: 40px 0; color: var(--ink-3); font-size: 13px; }
+.label { display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; margin-bottom: 16px; }
+
+@media (max-width: 800px) {
+  nav, .hsearch { display: none; }
+  .hero h1 { font-size: 36px; }
+  .bigsearch { flex-direction: column; }
+  .bigsearch input { padding: 14px 16px; }
+  .bigsearch button { padding: 12px; border-radius: 0 0 5px 5px; }
+  .cols, .work, .rgrid { grid-template-columns: 1fr; }
+  .toc { columns: 1; }
+  .side { display: none; }
+  .page { padding: 28px 20px; font-size: 19px; }
+  .vols { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="#">مكتبة الثقلين</a>
+  <nav><a class="on" href="#">الرئيسية</a><a href="#cats">الأقسام</a><a href="#">كل الكتب</a><a href="#">المكتبة الحسينية</a><a href="#">مكتبتي</a></nav>
+  <div class="hsearch">⌕ ابحث في المكتبة <span class="kbd">/</span></div>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <span class="label">اتجاه أ — أكاديمي تحريري</span>
+  <h1>تراث الثقلين<br>بين يديك</h1>
+  <p>أكثر من ثمانية عشر ألف كتاب في الحديث والتفسير والفقه والعقائد، للقراءة والبحث في النص الكامل.</p>
+  <div class="bigsearch">
+    <div class="scope"><span class="on">النصوص</span><span>العناوين</span><span>الفهارس</span></div>
+    <input placeholder="طلب العلم فريضة…">
+    <button>بحث</button>
+  </div>
+  <div class="stats"><div><b>١٨٬٨٠٠</b>كتاب</div><div><b>٤٬٦٧٤</b>مؤلف</div><div><b>٤٠</b>قسمًا</div></div>
+</div></div>
+
+<section><div class="wrap">
+  <div class="shead"><h2>مختارات الكتب</h2><a href="#">عرض الكل ←</a></div>
+  <div class="covers" id="covers"></div>
+</div></section>
+
+<section id="cats"><div class="wrap">
+  <div class="shead"><h2>الأقسام</h2></div>
+  <div class="cols">
+    <div><h3>الكتب الشيعية</h3><div class="idx" id="shia"></div></div>
+    <div><h3>الكتب الأخرى</h3><div class="idx" id="other"></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="label">صفحة الكتاب</span>
+  <div class="work">
+    <div><div class="cover" style="background:#5b2a14"><div class="t">الكافي</div><div class="v">الشيخ الكليني</div></div></div>
+    <div>
+      <h2>الكافي</h2>
+      <div class="byline">تأليف <a href="#">الشيخ الكليني</a> (ت ٣٢٩هـ) · ٨ مجلدات</div>
+      <div class="tags"><span class="tag">مصادر الحديث الشيعية - القسم العام</span><span class="tag">عربي</span></div>
+      <div class="vols" id="vols"></div>
+      <div class="btns"><a class="btn primary" href="#reader">ابدأ القراءة</a><a class="btn" href="#">فهرس كل المجلدات</a></div>
+      <h3 style="font-family:Amiri;font-size:22px;margin:36px 0 4px">فهرس المجلد الأول</h3>
+      <div class="toc" id="toc"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="reader" id="reader">
+  <div class="wrap"><span class="label">القارئ</span></div>
+  <div class="wrap rbar">
+    <div class="crumbs">الكافي › ج ١ › <b>باب فرض العلم ووجوب طلبه</b></div>
+    <div class="tools"><span>فهرس</span><span>بحث</span><span>Aa</span><span>☆</span></div>
+  </div>
+  <div class="wrap rgrid">
+    <aside class="side"><h4>فهرس المجلد</h4><div id="side"></div></aside>
+    <div>
+      <div class="cite">نسخ مع التوثيق · نسخ الرابط · تظليل</div>
+      <article class="page" id="page"></article>
+      <div class="pager"><a href="#">→ السابقة</a><span>صفحة <span class="pn">٣٠</span> من ٥٥٤</span><a href="#">التالية ←</a></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">مكتبة الثقلين · حول المكتبة · التطبيق على iOS وAndroid</div></footer>
+
+<script src="shared.js"></script>
+<script>
+const pal = ["#5b2a14", "#1f3b33", "#3b2f4f", "#6b4a16", "#243a52", "#4a2020"];
+fill("#covers", DATA.featured.slice(0, 7), (w) => `
+  <a href="#"><div class="cover" style="background:${pick(w.title, pal)}"><div class="t">${w.title}</div><div class="v">${w.vols > 1 ? toArabicDigits(w.vols) + " مجلدات" : ""}</div></div>
+  <div class="meta"><b>${w.title}</b><span>${w.author} (ت ${toArabicDigits(w.death)}هـ)</span></div></a>`);
+fill("#shia", DATA.shia, (c, i) => `<a href="#"><span>${c}</span><span>${toArabicDigits(DATA.count(i))}</span></a>`);
+fill("#other", DATA.other, (c, i) => `<a href="#"><span>${c}</span><span>${toArabicDigits(DATA.count(i + 13))}</span></a>`);
+fill("#vols", [1,2,3,4,5,6,7,8], (n) => `<a class="${n === 1 ? "on" : ""}" href="#"><b>ج ${toArabicDigits(n)}</b>${toArabicDigits(400 + n * 23)} صفحة</a>`);
+fill("#toc", DATA.toc, ([p, t]) => `<a href="#"><span>${t}</span><span>${toArabicDigits(p - 48)}</span></a>`);
+fill("#side", DATA.toc.slice(0, 10), ([p, t], i) => `<a class="${i === 3 ? "on" : ""}" href="#">${t}</a>`);
+const pg = DATA.page;
+document.getElementById("page").innerHTML = pg.headings.map((h) => `<h3>${h}</h3>`).join("") +
+  pg.text.map((t) => `<p>${t}</p>`).join("") + `<div class="fn">${pg.footnotes.join("<br>")}</div>`;
+</script>
+</body>
+</html>

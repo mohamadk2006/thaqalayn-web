@@ -1,0 +1,2078 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Thaqalayn Library API",
+    "description": "Catalog, download, and Arabic full-text search for the Thaqalayn library.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "description": "Liveness + dependency check.\n\nReturns 503 when the database is unreachable so that an uptime monitor, and later\nNginx, can tell \"process is running\" apart from \"process can actually serve requests\".",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/works": {
+      "get": {
+        "tags": [
+          "works"
+        ],
+        "summary": "List Works",
+        "operationId": "list_works_api_works_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Subject"
+            }
+          },
+          {
+            "name": "library",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Library"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Author"
+            }
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Featured"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageEnvelope_WorkOut_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/works/{work_id}": {
+      "get": {
+        "tags": [
+          "works"
+        ],
+        "summary": "Get Work",
+        "operationId": "get_work_api_works__work_id__get",
+        "parameters": [
+          {
+            "name": "work_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Work Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkDetailOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "List Books",
+        "operationId": "list_books_api_books_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Subject"
+            }
+          },
+          {
+            "name": "library",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Library"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Author"
+            }
+          },
+          {
+            "name": "work",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Work"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageEnvelope_BookOut_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{book_id}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Get Book",
+        "operationId": "get_book_api_books__book_id__get",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Book Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{book_id}/cover": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Download Cover",
+        "description": "404s for every book today — no cover images exist in the source material (per the\nproject brief: covers are deferred). The endpoint exists now so the client can wire\nup the URL and treat 404 as \"show a placeholder\" from day one.",
+        "operationId": "download_cover_api_books__book_id__cover_get",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Book Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{book_id}/pages/{sequence}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Get Book Page",
+        "description": "One page of a book, for reading without downloading it. `sequence` is the page's\nposition in the book (the `sequence` field of a search hit / of the book JSON), not\nits printed label, which is not unique within a book.",
+        "operationId": "get_book_page_api_books__book_id__pages__sequence__get",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Book Id"
+            }
+          },
+          {
+            "name": "sequence",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Sequence"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{book_id}/toc": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Get Book Toc",
+        "operationId": "get_book_toc_api_books__book_id__toc_get",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Book Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TocResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/authors": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "List Authors",
+        "operationId": "list_authors_api_authors_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AuthorOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Authors Api Authors Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "List Categories",
+        "operationId": "list_categories_api_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Categories Api Categories Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/libraries": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "List Libraries",
+        "operationId": "list_libraries_api_libraries_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/LibraryOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Libraries Api Libraries Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/languages": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "List Languages",
+        "operationId": "list_languages_api_languages_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/LanguageOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Languages Api Languages Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search",
+        "operationId": "search_api_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Arabic search query",
+              "title": "Q"
+            },
+            "description": "Arabic search query"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more subject category IDs",
+              "title": "Subject"
+            },
+            "description": "One or more subject category IDs"
+          },
+          {
+            "name": "library",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more library IDs",
+              "title": "Library"
+            },
+            "description": "One or more library IDs"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more language codes",
+              "title": "Language"
+            },
+            "description": "One or more language codes"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more author IDs",
+              "title": "Author"
+            },
+            "description": "One or more author IDs"
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more author names (use when the ID isn't known)",
+              "title": "Authorname"
+            },
+            "description": "One or more author names (use when the ID isn't known)"
+          },
+          {
+            "name": "work",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more work IDs",
+              "title": "Work"
+            },
+            "description": "One or more work IDs"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageEnvelope_SearchHit_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/toc/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search Toc",
+        "operationId": "search_toc_api_toc_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Heading text; sent as typed, folded server-side",
+              "title": "Q"
+            },
+            "description": "Heading text; sent as typed, folded server-side"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more subject category IDs",
+              "title": "Subject"
+            },
+            "description": "One or more subject category IDs"
+          },
+          {
+            "name": "library",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more library IDs",
+              "title": "Library"
+            },
+            "description": "One or more library IDs"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more language codes",
+              "title": "Language"
+            },
+            "description": "One or more language codes"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more author IDs",
+              "title": "Author"
+            },
+            "description": "One or more author IDs"
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more author names",
+              "title": "Authorname"
+            },
+            "description": "One or more author names"
+          },
+          {
+            "name": "work",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One or more work IDs",
+              "title": "Work"
+            },
+            "description": "One or more work IDs"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TocSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthorOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "deathLabel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deathlabel"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "AuthorOut"
+      },
+      "BookOut": {
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "title": "Bookid"
+          },
+          "workId": {
+            "type": "string",
+            "title": "Workid"
+          },
+          "workTitle": {
+            "type": "string",
+            "title": "Worktitle"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "authorDeath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authordeath"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectOut"
+            },
+            "type": "array",
+            "title": "Subjects"
+          },
+          "libraries": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryOut"
+            },
+            "type": "array",
+            "title": "Libraries"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "shamelaCollection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shamelacollection"
+          },
+          "pageFirst": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagefirst"
+          },
+          "pageLast": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagelast"
+          },
+          "paragraphCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paragraphcount"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "title": "Sizebytes"
+          },
+          "downloadBytes": {
+            "type": "integer",
+            "title": "Downloadbytes"
+          },
+          "contentVersion": {
+            "type": "integer",
+            "title": "Contentversion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bookId",
+          "workId",
+          "workTitle",
+          "volume",
+          "title",
+          "author",
+          "authorDeath",
+          "description",
+          "subjects",
+          "libraries",
+          "language",
+          "publisher",
+          "shamelaCollection",
+          "pageFirst",
+          "pageLast",
+          "paragraphCount",
+          "sizeBytes",
+          "downloadBytes",
+          "contentVersion"
+        ],
+        "title": "BookOut",
+        "description": "One volume — the downloadable unit. Matches CatalogBook in the iOS brief."
+      },
+      "CategoryOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order"
+          },
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "pinnedBookIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pinnedbookids",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "order",
+          "section"
+        ],
+        "title": "CategoryOut",
+        "description": "An item of GET /api/categories: a subject plus its position in the list, so the\nserver -- not the app -- decides where a new category sits. Deliberately not part of\nSubjectOut, which is embedded in every book and work."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "database": {
+            "type": "string",
+            "enum": [
+              "up",
+              "down"
+            ],
+            "title": "Database"
+          },
+          "books_root_present": {
+            "type": "boolean",
+            "title": "Books Root Present"
+          },
+          "covers_root_present": {
+            "type": "boolean",
+            "title": "Covers Root Present"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version",
+          "database",
+          "books_root_present",
+          "covers_root_present"
+        ],
+        "title": "HealthResponse",
+        "description": "Response for GET /api/health.\n\n`status` is \"ok\" only when every dependency the API needs to serve real traffic is\nactually reachable — a health check that returns 200 while the database is down is\nworse than no health check, because it's what a VPS load balancer or an uptime\nmonitor will trust."
+      },
+      "LanguageOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "LanguageOut"
+      },
+      "LibraryOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "parentId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "LibraryOut",
+        "description": "A curated grouping (see app.models.library.Library) -- independent of `subjects`.\nOpen-ended and admin-creatable, unlike the fixed 39 subjects. `parentId` supports\noptional nesting; a flat list (not a tree) is returned from GET /api/libraries, the\nsame choice already made for subjects -- the client groups by parentId itself."
+      },
+      "PageEnvelope_BookOut_": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BookOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "items"
+        ],
+        "title": "PageEnvelope[BookOut]"
+      },
+      "PageEnvelope_SearchHit_": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "items"
+        ],
+        "title": "PageEnvelope[SearchHit]"
+      },
+      "PageEnvelope_WorkOut_": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/WorkOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "items"
+        ],
+        "title": "PageEnvelope[WorkOut]"
+      },
+      "PageResponse": {
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "title": "Bookid"
+          },
+          "contentVersion": {
+            "type": "integer",
+            "title": "Contentversion"
+          },
+          "pageCount": {
+            "type": "integer",
+            "title": "Pagecount"
+          },
+          "page": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Page"
+          },
+          "sectionTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sectiontitle"
+          },
+          "prevSequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prevsequence"
+          },
+          "nextSequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nextsequence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bookId",
+          "contentVersion",
+          "pageCount",
+          "page",
+          "sectionTitle",
+          "prevSequence",
+          "nextSequence"
+        ],
+        "title": "PageResponse"
+      },
+      "SearchHit": {
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "title": "Bookid"
+          },
+          "workId": {
+            "type": "string",
+            "title": "Workid"
+          },
+          "workTitle": {
+            "type": "string",
+            "title": "Worktitle"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectOut"
+            },
+            "type": "array",
+            "title": "Subjects"
+          },
+          "libraries": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryOut"
+            },
+            "type": "array",
+            "title": "Libraries"
+          },
+          "sectionTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sectiontitle"
+          },
+          "page": {
+            "type": "string",
+            "title": "Page"
+          },
+          "pageSequence": {
+            "type": "integer",
+            "title": "Pagesequence"
+          },
+          "snippet": {
+            "type": "string",
+            "title": "Snippet"
+          },
+          "matchStart": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matchstart"
+          },
+          "matchEnd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matchend"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bookId",
+          "workId",
+          "workTitle",
+          "title",
+          "author",
+          "volume",
+          "subjects",
+          "libraries",
+          "sectionTitle",
+          "page",
+          "pageSequence",
+          "snippet",
+          "matchStart",
+          "matchEnd",
+          "score"
+        ],
+        "title": "SearchHit"
+      },
+      "SubjectOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "SubjectOut"
+      },
+      "TocEntryOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "pageSequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagesequence"
+          },
+          "pageNumber": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagenumber"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "order",
+          "title",
+          "pageSequence",
+          "pageNumber"
+        ],
+        "title": "TocEntryOut"
+      },
+      "TocHit": {
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "title": "Bookid"
+          },
+          "workId": {
+            "type": "string",
+            "title": "Workid"
+          },
+          "workTitle": {
+            "type": "string",
+            "title": "Worktitle"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "heading": {
+            "type": "string",
+            "title": "Heading"
+          },
+          "tocId": {
+            "type": "string",
+            "title": "Tocid"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order"
+          },
+          "page": {
+            "type": "string",
+            "title": "Page"
+          },
+          "pageSequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagesequence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bookId",
+          "workId",
+          "workTitle",
+          "title",
+          "author",
+          "volume",
+          "heading",
+          "tocId",
+          "order",
+          "page",
+          "pageSequence"
+        ],
+        "title": "TocHit",
+        "description": "One chapter heading matched by GET /api/toc/search. Field names follow SearchHit\n(bookId/workId as strings, page + pageSequence) so the client's decoding carries over;\nthe sequence is what GET /api/books/{id}/pages/{sequence} and the downloaded JSON's\npages are keyed by, the label is only what is printed."
+      },
+      "TocResponse": {
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "title": "Bookid"
+          },
+          "contentVersion": {
+            "type": "integer",
+            "title": "Contentversion"
+          },
+          "pageCount": {
+            "type": "integer",
+            "title": "Pagecount"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/TocEntryOut"
+            },
+            "type": "array",
+            "title": "Entries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bookId",
+          "contentVersion",
+          "pageCount",
+          "entries"
+        ],
+        "title": "TocResponse"
+      },
+      "TocSearchResponse": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TocHit"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "capped": {
+            "type": "boolean",
+            "title": "Capped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "items",
+          "capped"
+        ],
+        "title": "TocSearchResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WorkDetailOut": {
+        "properties": {
+          "workId": {
+            "type": "string",
+            "title": "Workid"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "authorDeath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authordeath"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectOut"
+            },
+            "type": "array",
+            "title": "Subjects"
+          },
+          "libraries": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryOut"
+            },
+            "type": "array",
+            "title": "Libraries"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "volumeCount": {
+            "type": "integer",
+            "title": "Volumecount"
+          },
+          "totalSizeBytes": {
+            "type": "integer",
+            "title": "Totalsizebytes"
+          },
+          "shamelaCollection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shamelacollection"
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "title": "Isfeatured"
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/BookOut"
+            },
+            "type": "array",
+            "title": "Volumes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workId",
+          "title",
+          "author",
+          "authorDeath",
+          "subjects",
+          "libraries",
+          "language",
+          "volumeCount",
+          "totalSizeBytes",
+          "shamelaCollection",
+          "isFeatured",
+          "volumes"
+        ],
+        "title": "WorkDetailOut",
+        "description": "GET /api/works/{workId}: the summary plus every volume, per Amendment 2 —\nvolumes are deliberately NOT embedded in the list endpoint's WorkOut."
+      },
+      "WorkOut": {
+        "properties": {
+          "workId": {
+            "type": "string",
+            "title": "Workid"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "authorDeath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authordeath"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectOut"
+            },
+            "type": "array",
+            "title": "Subjects"
+          },
+          "libraries": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryOut"
+            },
+            "type": "array",
+            "title": "Libraries"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "volumeCount": {
+            "type": "integer",
+            "title": "Volumecount"
+          },
+          "totalSizeBytes": {
+            "type": "integer",
+            "title": "Totalsizebytes"
+          },
+          "shamelaCollection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shamelacollection"
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "title": "Isfeatured"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workId",
+          "title",
+          "author",
+          "authorDeath",
+          "subjects",
+          "libraries",
+          "language",
+          "volumeCount",
+          "totalSizeBytes",
+          "shamelaCollection",
+          "isFeatured"
+        ],
+        "title": "WorkOut",
+        "description": "One title, independent of volume count. Matches CatalogWork in Amendment 2."
+      }
+    },
+    "securitySchemes": {
+      "HTTPBasic": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

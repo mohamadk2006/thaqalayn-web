@@ -1,69 +1,73 @@
-import Image from "next/image";
+import { Search } from "lucide-react";
 import styles from "./page.module.css";
+
+// Temporary foundation check page (design-system/MASTER.md tokens) — replaced by the real home page in Phase 2.
+const covers = [
+  { title: "الكافي", author: "الشيخ الكليني", death: "٣٢٩", vols: "٨ مجلدات", color: "#5b2a14" },
+  { title: "الإرشاد", author: "الشيخ المفيد", death: "٤١٣", vols: "مجلدان", color: "#1f3b33" },
+  { title: "الصحيفة السجادية", author: "الإمام زين العابدين (ع)", death: "٩٤", vols: "", color: "#3b2f4f" },
+];
+
+const categories = [
+  ["القرآن الكريم وعلومه", "٣٨"],
+  ["مصادر العقائد عند الشيعة", "١١٢"],
+  ["مصادر الحديث الشيعية - القسم العام", "٩٦"],
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <section className={styles.hero}>
+        <div className="container">
+          <h1 className={styles.title}>تراث الثقلين بين يديك</h1>
+          <p className={styles.lead}>
+            أكثر من ثمانية عشر ألف كتاب في الحديث والتفسير والفقه والعقائد، للقراءة والبحث في النص الكامل.
           </p>
+          <form className={styles.search} role="search" action="/search">
+            <label htmlFor="q" className="visually-hidden">
+              ابحث في المكتبة
+            </label>
+            <Search className={styles.searchIcon} size={20} strokeWidth={1.75} aria-hidden />
+            <input id="q" name="q" placeholder="طلب العلم فريضة…" />
+            <button type="submit">بحث</button>
+          </form>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className={`container ${styles.section}`}>
+        <div className={styles.head}>
+          <h2>مختارات الكتب</h2>
+          <a href="#">عرض الكل</a>
         </div>
-      </main>
-    </div>
+        <div className={styles.covers}>
+          {covers.map((c) => (
+            <a key={c.title} href="#" className={styles.book}>
+              <span className={styles.cover} style={{ background: c.color }}>
+                <span className={styles.coverTitle}>{c.title}</span>
+                <span className={styles.coverVols}>{c.vols}</span>
+              </span>
+              <span className={styles.metaTitle}>{c.title}</span>
+              <span className={styles.metaAuthor}>
+                {c.author} (ت {c.death}هـ)
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section id="categories" className={`container ${styles.section}`}>
+        <h3 className={styles.listHead}>الكتب الشيعية</h3>
+        <ul className={styles.index}>
+          {categories.map(([name, count]) => (
+            <li key={name}>
+              <a href="#">
+                <span>{name}</span>
+                <span className={styles.count}>{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 }
